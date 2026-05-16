@@ -60,3 +60,60 @@ Path("mail_outbox.txt").write_text(comment, encoding="utf-8")
 ```
 
 メール送信をしたい場合は、シェルコマンドではなく `smtplib` などの専用ライブラリを使います。
+
+### パスワードハッシュ化
+
+パスワードは平文のままDBに保存しません。DBが漏えいしたときに、保存値から元のパスワードを直接読めないようにします。
+
+実装では、単なるSHA-256ではなく、ソルト付きで計算コストのある方式を使います。実務ではArgon2、bcrypt、scrypt、またはそれらを扱うライブラリを優先します。この演習で外部ライブラリを増やさずに最小構成で試すなら、標準ライブラリの `hashlib.pbkdf2_hmac()` を使えます。
+
+保存値は、アルゴリズム名、反復回数、ソルト、ハッシュ値をまとめて1つの文字列にしておくと、あとで検証や方式変更がしやすくなります。
+
+```python
+import base64
+import hashlib
+import hmac
+import secrets
+
+ITERATIONS = 200_000
+
+
+def b64encode(data: bytes) -> str:
+    return base64.b64encode(data).decode("ascii")
+
+
+def hash_password(password: str) -> str:
+    salt = secrets.token_bytes(16)
+    digest = hashlib.pbkdf2_hmac(
+        "sha256",
+        password.encode("utf-8"),
+        salt,
+        ITERATIONS,
+    )
+    return f"pbkdf2_sha256${ITERATIONS}${b64encode(salt)}${b64encode(digest)}"
+```
+
+ログイン時は、DBからユーザー名でユーザーを取得し、入力されたパスワードを同じ条件でハッシュ化して比較します。比較には `==` ではなく `hmac.compare_digest()` を使うと、タイミング差による情報漏えいを避けやすくなります。
+
+```python
+def verify_password(password: str, stored: str) -> bool:
+    try:
+        method, iterations, salt_text, digest_text = stored.split("$")
+    except ValueError:
+        return False
+
+    if method != "pbkdf2_sha256":
+        return False
+
+    salt = base64.b64decode(salt_text)
+    expected = base64.b64decode(digest_text)
+    actual = hashlib.pbkdf2_hmac(
+        "sha256",
+        password.encode("utf-8"),
+        salt,
+        int(iterations),
+    )
+    return hmac.compare_digest(actual, expected)
+```
+
+演習アプリでは、初期ユーザー作成と新規登録の両方で `hash_password()` を通して保存し、ログイン処理ではSQLの条件にパスワードを直接含めず、取得後に `verify_password()` で確認します。
