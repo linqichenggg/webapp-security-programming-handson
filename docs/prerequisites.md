@@ -6,6 +6,7 @@
 
 | 分野 | 使う場面 | 最低限わかればよいこと |
 | --- | --- | --- |
+| コードエディタ | ファイル編集、ターミナル操作 | フォルダを開き、ファイルを編集し、ターミナルを開く |
 | ターミナル | アプリ起動、DB確認、補助サーバ起動 | コマンドを1行ずつ実行する |
 | Python | Bottleアプリの実行 | `python app/main.py` でサーバを起動する |
 | HTTP | ブラウザとWebサーバの通信 | リクエストとレスポンスがある |
@@ -13,6 +14,28 @@
 | Cookie | ログイン状態、セッション | ブラウザが値を保存し、次のリクエストで送る |
 | SQL | ユーザとコメントの保存 | DBに問い合わせるための言語 |
 | シェル | コマンドインジェクション | `;` や `"` などに構文上の意味がある |
+
+## おすすめのエディタ
+
+この教材では、初心者向けの標準エディタとして **Visual Studio Code** を使います。無料で、Windows、macOS、Linuxで使えます。Python拡張、ターミナル、Git連携を同じ画面で扱えるため、演習中の説明をそろえやすいです。名前が似ていますが、ここで使うのは **Visual Studio Code** で、**Visual Studio** ではありません。
+
+すでに使い慣れたエディタがある人は、そのまま使って構いません。ただし、講師の説明や画面例はVS Codeを前提にします。
+
+### VS Codeの準備
+
+1. 公式サイトからVS Codeをダウンロードします。
+   - <https://code.visualstudio.com/Download>
+2. インストーラを開き、基本的には標準設定のままインストールします。
+   - Windows: `User Installer x64` を選びます。
+   - macOS: `Universal` 版、または自分のMacに合う版を選びます。
+   - Linux: Ubuntu/Debian系は `.deb`、Fedora系は `.rpm` を選びます。
+3. VS Codeを起動します。
+4. 左側の拡張機能アイコンを開き、`Python` と検索して、Microsoftが提供しているPython拡張をインストールします。
+5. `File` > `Open Folder...` から、この教材リポジトリのフォルダ `webapp-security-programming-handson` を開きます。
+6. `Terminal` > `New Terminal` でターミナルを開きます。
+7. 環境構築後、Pythonの実行環境を聞かれたら、`.venv` のPythonを選びます。
+
+VS Code上のターミナルで、この後のコマンドを実行します。
 
 ## ターミナルの基本
 
