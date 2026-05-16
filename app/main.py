@@ -72,11 +72,14 @@ def render_page(title, body):
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{html.escape(title)}</title>
   <style>
-    body {{ font-family: system-ui, sans-serif; line-height: 1.7; margin: 2rem auto; max-width: 760px; }}
+    body {{ font-family: system-ui, sans-serif; line-height: 1.7; margin: 0 auto 2rem; max-width: 860px; padding: 0 1rem; }}
     input, textarea, button {{ font: inherit; margin: .25rem 0; }}
     input, textarea {{ box-sizing: border-box; width: 100%; }}
     button {{ cursor: pointer; padding: .35rem .75rem; }}
-    nav a {{ margin-right: .5rem; }}
+    header {{ border-bottom: 1px solid #ddd; margin-bottom: 1.5rem; padding: 1rem 0; }}
+    nav {{ display: flex; flex-wrap: wrap; gap: .5rem; }}
+    nav a {{ border: 1px solid #ccc; border-radius: .35rem; color: inherit; padding: .35rem .65rem; text-decoration: none; }}
+    nav a:hover {{ background: #f5f5f5; }}
     pre {{ background: #f5f5f5; overflow-x: auto; padding: 1rem; }}
     table {{ border-collapse: collapse; margin: 1rem 0; width: 100%; }}
     th, td {{ border: 1px solid #ddd; padding: .5rem; text-align: left; vertical-align: top; }}
@@ -87,18 +90,21 @@ def render_page(title, body):
   </style>
 </head>
 <body>
-  <h1>{html.escape(title)}</h1>
-  {body}
-  <hr>
-  <nav>
-    <a href="/signup">Signup</a>
-    <a href="/login">Login</a>
-    <a href="/mypage">MyPage</a>
-    <a href="/cookies">Cookie</a>
-    <a href="/bbs">BBS</a>
-    <a href="/contact">Contact</a>
-    <a href="/logout">Logout</a>
-  </nav>
+  <header>
+    <nav aria-label="Main navigation">
+      <a href="/signup">Signup</a>
+      <a href="/login">Login</a>
+      <a href="/mypage">MyPage</a>
+      <a href="/cookies">Cookie</a>
+      <a href="/bbs">BBS</a>
+      <a href="/contact">Contact</a>
+      <a href="/logout">Logout</a>
+    </nav>
+  </header>
+  <main>
+    <h1>{html.escape(title)}</h1>
+    {body}
+  </main>
 </body>
 </html>"""
 
@@ -239,6 +245,7 @@ def mypage():
         <p>Hello, {html.escape(user.username)}.</p>
         <ul>
           <li><a href="/bbs">掲示板へ移動</a></li>
+          <li><a href="/cookies">Cookieを確認する</a></li>
           <li><a href="/contact">問い合わせフォームへ移動</a></li>
         </ul>
         """,
