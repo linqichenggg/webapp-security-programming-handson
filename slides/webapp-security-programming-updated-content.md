@@ -40,6 +40,20 @@ title: Web Application Security Programming
 
 ---
 
+<!-- Slide 04 / source: prerequisites.md -->
+
+# 事前準備: VS Codeとターミナル
+
+- 初心者向けの標準エディタは Visual Studio Code
+- MicrosoftのPython拡張を入れる
+- `File` > `Open Folder...` で教材リポジトリを開く
+- `Terminal` > `New Terminal` で同じ画面からコマンドを実行する
+- 環境構築後、Pythonの実行環境を聞かれたら `.venv` を選ぶ
+
+経験者は好みのエディタでよいが、講義中の説明はVS Codeを前提にする。
+
+---
+
 <!-- Slide 04 / original: Frameworks we use here -->
 
 # Frameworks We Use Here
@@ -1056,3 +1070,78 @@ Pico.cssがフォーム要素を自動的に整える。
 6. 演習9として脆弱性対策を1つずつ実装する
 
 最終目標: 動くアプリから、安全に説明できる教材へ育てる
+
+---
+
+<!-- Slide 67 / source: exercises.md and security-notes.md -->
+
+# 演習9: 改修課題
+
+次の対策を1つずつ実装し、攻撃が通らなくなることを確認する。
+
+- ログインSQLをプレースホルダに置き換える
+- BBS表示でHTMLエスケープを有効にする
+- Cookieに `HttpOnly` と `SameSite=Lax` を付ける
+- CSRFトークンをセッションごとに生成し、POST時に検証する
+- `/contact` から `os.system()` を取り除く
+- パスワードをハッシュ化して保存する
+
+---
+
+<!-- Slide 68 / source: security-notes.md -->
+
+# パスワードをハッシュ化して保存する
+
+- パスワードを平文のままDBに保存しない
+- 単なるSHA-256ではなく、ソルト付きで計算コストのある方式を使う
+- 実務ではArgon2、bcrypt、scryptなどを優先する
+- この演習の最小構成では `hashlib.pbkdf2_hmac()` を使える
+- 保存値には、方式、反復回数、ソルト、ハッシュ値を含める
+
+ログイン時はユーザー名で取得し、入力パスワードを `verify_password()` で検証する。
+
+---
+
+<!-- Slide 69 / source: solutions.md and instructor-hints.md -->
+
+# 解答と講師用ヒントの分離
+
+- 受講者向け: `docs/exercises.md`
+- 経験者向け: `docs/advanced-tasks.md`
+- 脆弱性と対策の対応表: `docs/security-notes.md`
+- 解答例: `docs/solutions.md`
+- 講師用ヒント: `docs/instructor-hints.md`
+
+演習中は、受講者にすぐ解答を見せず、必要に応じて講師用ヒントから段階的に補助する。
+
+---
+
+<!-- Slide 70 / source: setup.md -->
+
+# 片付けとWindows対応
+
+演習で生成されるファイル:
+
+- `app/data.db`
+- `app/mail_outbox.txt`
+- `stolen_cookies.log`
+- `command_injection_result.txt`
+- `downloaded_badscript.py`
+- `badscript_ran.txt`
+
+Windows標準環境では `make` が通常入っていないため、片付けは次を使う。
+
+```powershell
+py tools/clean.py
+```
+
+---
+
+<!-- Slide 71 / source: wrap-up -->
+
+# まとめ
+
+- Webアプリの脆弱性は、入力値が別の文脈で解釈されるところに生まれやすい
+- Cookie、HTML、SQL、シェル、パスワード保存は、それぞれ守り方が違う
+- 観察してから直すことで、対策の意味を説明しやすくなる
+- 最後は「原因となる実装」「観察できた現象」「対策」を表にまとめる

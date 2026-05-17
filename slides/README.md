@@ -12,3 +12,7 @@
 更新後のスライド本文案:
 
 - `webapp-security-programming-updated-content.md`
+
+PowerPoint版:
+
+- `webapp-security-programming-handson-2026.pptx`: `slide001.pptx` の内容を現行教材に合わせて再構成した版
