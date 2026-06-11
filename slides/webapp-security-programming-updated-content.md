@@ -68,7 +68,7 @@ title: Web Application Security Programming
 
 <!-- Slide 05 / source: Bottle exercise intro -->
 
-# 演習1: Bottleを試そう
+# 基本演習2: Bottleを試そう
 
 1. Clone the repository.
 2. Install dependencies in a Python virtual environment.
@@ -80,9 +80,9 @@ Point: A URL path parameter is passed into a Python function and rendered as HTM
 
 ---
 
-<!-- Slide 06 / source: OCR from slide002 Exercise 1 image code -->
+<!-- Slide 06 / source: OCR from slide002 Bottle image code -->
 
-# 演習1: 元スライドのBottleコード
+# 基本演習2: 元スライドのBottleコード
 
 ```python
 from bottle import *
@@ -100,9 +100,9 @@ run(host='0.0.0.0', port=8089)
 
 ---
 
-<!-- Slide 06 / original: 演習1: bottleを試そう -->
+<!-- Slide 06 / original: bottleを試そう -->
 
-# 演習1: Bottleを試そう
+# 基本演習2: Bottleを試そう
 
 ```bash
 git clone https://github.com/koide55/webapp-security-programming-handson.git
@@ -120,7 +120,7 @@ python app/main.py --reset-db
 
 <!-- Slide 07 / source: Peewee and SQLite exercise intro -->
 
-# 演習2: PeeweeとSQLiteを試そう
+# 基本演習3: PeeweeとSQLiteを試そう
 
 - `Users` and `Comments` models define database tables.
 - `initialize_database()` creates the tables and inserts seed users.
@@ -132,9 +132,9 @@ python app/main.py --reset-db
 
 ---
 
-<!-- Slide 08 / source: OCR from slide002 Exercise 2 image code -->
+<!-- Slide 08 / source: OCR from slide002 Peewee image code -->
 
-# 演習2: 元スライドのPeeweeコード
+# 基本演習3: 元スライドのPeeweeコード
 
 ```python
 from peewee import *
@@ -159,9 +159,9 @@ Users(username='hirosk', password='1234').save()
 
 ---
 
-<!-- Slide 08 / original: 演習2: peeweeとSQLiteを試そう -->
+<!-- Slide 08 / original: peeweeとSQLiteを試そう -->
 
-# 演習2: PeeweeとSQLiteを試そう
+# 基本演習3: PeeweeとSQLiteを試そう
 
 ```bash
 sqlite3 app/data.db
@@ -180,7 +180,7 @@ select userid, username, password, cookie from users;
 
 <!-- Slide 09 / source: database access exercise -->
 
-# 演習2: データベース操作
+# 基本演習3: データベース操作
 
 - Peewee query example:
   - `Users.get_or_none(Users.username == "koide")`
@@ -191,9 +191,9 @@ select userid, username, password, cookie from users;
 
 ---
 
-<!-- Slide 10 / original: 演習2 続き -->
+<!-- Slide 10 / original: peeweeとSQLite 続き -->
 
-# 演習2: データベース操作の確認
+# 基本演習3: データベース操作の確認
 
 - `Users` はユーザ、パスワード、Cookie情報を持つ
 - `Comments` は掲示板コメントと投稿者を持つ
@@ -435,7 +435,7 @@ records = cursor.execute(sql)
 
 <!-- Slide 26 / source: session hijacking exercise -->
 
-# 演習3: セッションハイジャック
+# 基本演習4: セッションハイジャック
 
 1. 通常ウィンドウで `koide` としてログインする
 2. 別ブラウザまたはシークレットウィンドウで `alice` としてログインする
@@ -469,7 +469,7 @@ records = cursor.execute(sql)
 
 <!-- Slide 28 / source: signed cookie comparison -->
 
-# 演習3 発展: 署名付きCookieを比較する
+# 発展演習5: 署名付きCookieを比較する
 
 `app/main.py` の次の指定を観察する。
 
@@ -645,7 +645,7 @@ python app/main.py --reset-db --init-only
 
 <!-- Slide 39 / source: XSS exercise -->
 
-# 演習4: XSS
+# 基本演習6: XSS
 
 1. Webアプリでログインし、BBSを開く
 2. 補助サーバを起動する
@@ -662,7 +662,7 @@ python app/main.py --reset-db --init-only
 
 <!-- Slide 40 / source: XSS explanation exercise -->
 
-# 演習4 発展: XSSを説明する
+# 発展演習7: XSSを説明する
 
 調べて説明するもの:
 
@@ -741,7 +741,7 @@ def csrf_page():
 
 <!-- Slide 45 / source: CSRF exercise -->
 
-# 演習5: CSRF
+# 基本演習8: CSRF
 
 1. Webアプリを起動する
 2. 補助サーバを起動する
@@ -803,7 +803,7 @@ records = cursor.execute(sql)
 
 <!-- Slide 49 / source: SQL injection exercise -->
 
-# 演習6: SQLインジェクション
+# 基本演習9: SQLインジェクション
 
 ログイン画面で試す例:
 
@@ -975,7 +975,7 @@ Path("badscript_ran.txt").write_text(
 
 <!-- Slide 59 / source: command injection exercise -->
 
-# 演習7: コマンドインジェクション
+# 基本演習10: コマンドインジェクション
 
 1. Webアプリにログインする
 2. `/contact` を開く
@@ -1107,14 +1107,14 @@ Pico.cssがフォーム要素を自動的に整える。
 
 <!-- Slide 66 / original: UI exercise -->
 
-# 演習8: Pico.cssでUI改善
+# 基本演習11: Pico.cssでUI改善
 
 1. `examples/pico-css/` のサンプルを確認する
 2. `static/app.css` と `views/base.tpl` を追加する
 3. `login` 画面をテンプレート化する
 4. 他の画面も少しずつテンプレートへ移す
 5. UI改善後も、SQLi、XSS、CSRFの挙動がどう変わるか確認する
-6. 演習9として脆弱性対策を1つずつ実装する
+6. 発展演習12以降として脆弱性対策を1つずつ実装する
 
 最終目標: 動くアプリから、安全に説明できる教材へ育てる
 
@@ -1122,7 +1122,7 @@ Pico.cssがフォーム要素を自動的に整える。
 
 <!-- Slide 67 / source: exercises.md and security-notes.md -->
 
-# 演習9: 改修課題
+# 発展演習12-18: 改修課題
 
 次の対策を1つずつ実装し、攻撃が通らなくなることを確認する。
 

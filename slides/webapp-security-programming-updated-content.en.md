@@ -110,7 +110,7 @@ We use these frameworks and tools to build an experimental system for learning w
 
 ---
 
-# Exercise 1: Try Bottle
+# Basic Exercise 2: Try Bottle
 
 1. Clone the repository
 2. Install dependencies in a Python virtual environment
@@ -122,7 +122,7 @@ Point: a URL path parameter is passed into a Python function and rendered as HTM
 
 ---
 
-# Exercise 1: Original Bottle Code
+# Basic Exercise 2: Original Bottle Code
 
 ```python
 from bottle import *
@@ -140,7 +140,7 @@ run(host='0.0.0.0', port=8089)
 
 ---
 
-# Exercise 1: Run the App
+# Basic Exercise 2: Run the App
 
 ```bash
 git clone https://github.com/koide55/webapp-security-programming-handson.git
@@ -156,7 +156,7 @@ python app/main.py --reset-db
 
 ---
 
-# Exercise 1: Bottle Walkthrough
+# Basic Exercise 2: Bottle Walkthrough
 
 1. Start Python and enter the Bottle sample code.
 2. Open the URL in a browser and confirm the response.
@@ -170,7 +170,7 @@ Key annotations:
 
 ---
 
-# Ex 1: Try Bottle
+# Basic Exercise 2: Try Bottle
 
 Launch Python and input the sample code.
 
@@ -182,7 +182,7 @@ Launch Python and input the sample code.
 
 ---
 
-# Exercise 2: Try Peewee and SQLite
+# Basic Exercise 3: Try Peewee and SQLite
 
 - `Users` and `Comments` models define database tables
 - `initialize_database()` creates the tables and inserts seed users
@@ -194,7 +194,7 @@ Launch Python and input the sample code.
 
 ---
 
-# Exercise 2: Original Peewee Code
+# Basic Exercise 3: Original Peewee Code
 
 ```python
 from peewee import *
@@ -219,7 +219,7 @@ Users(username='hirosk', password='1234').save()
 
 ---
 
-# Exercise 2: Inspect SQLite
+# Basic Exercise 3: Inspect SQLite
 
 ```bash
 sqlite3 app/data.db
@@ -236,7 +236,7 @@ select userid, username, password, cookie from users;
 
 ---
 
-# Exercise 2: Database Operations
+# Basic Exercise 3: Database Operations
 
 - Peewee query example:
   - `Users.get_or_none(Users.username == "koide")`
@@ -247,7 +247,7 @@ select userid, username, password, cookie from users;
 
 ---
 
-# Exercise 2: Database Checkpoints
+# Basic Exercise 3: Database Checkpoints
 
 - `Users` stores users, passwords, and cookie-related values
 - `Comments` stores BBS comments and authors
@@ -256,7 +256,7 @@ select userid, username, password, cookie from users;
 
 ---
 
-# Exercise 2: Insert Data with Peewee
+# Basic Exercise 3: Insert Data with Peewee
 
 Flow in the original exercise:
 
@@ -271,7 +271,7 @@ In the current app, the same idea is handled by `initialize_database()`.
 
 ---
 
-# Ex 2: Try Peewee and SQLite
+# Basic Exercise 3: Try Peewee and SQLite
 
 Original exercise flow:
 
@@ -285,7 +285,7 @@ Original exercise flow:
 
 ---
 
-# Ex 2: Direct Database Access
+# Basic Exercise 3: Direct Database Access
 
 Original continuation:
 
@@ -298,7 +298,7 @@ Original continuation:
 
 ---
 
-# Exercise 2: Direct Database Checkpoints
+# Basic Exercise 3: Direct Database Checkpoints
 
 Using the SQLite command-line tool:
 
@@ -616,7 +616,7 @@ Discussion:
 
 ---
 
-# Exercise 3: Session Hijacking
+# Basic Exercise 4: Session Hijacking
 
 1. Log in as `koide` in a normal window
 2. Log in as `alice` in another browser or incognito window
@@ -646,7 +646,7 @@ Values to check:
 
 ---
 
-# Exercise 3 Advanced: Compare Signed Cookies
+# Advanced Exercise 5: Compare Signed Cookies
 
 Observe these lines in `app/main.py`:
 
@@ -835,7 +835,7 @@ python app/main.py --reset-db --init-only
 
 ---
 
-# Exercise 4: XSS
+# Basic Exercise 6: XSS
 
 1. Log in to the web app and open BBS
 2. Start the helper server
@@ -850,7 +850,7 @@ python app/main.py --reset-db --init-only
 
 ---
 
-# Exercise 4 Advanced: Explain XSS
+# Advanced Exercise 7: Explain XSS
 
 Research and explain:
 
@@ -939,7 +939,7 @@ def csrf_page():
 
 ---
 
-# Exercise 5: CSRF
+# Basic Exercise 8: CSRF
 
 1. Start the web app
 2. Start the helper server
@@ -1009,7 +1009,7 @@ records = cursor.execute(sql)
 
 ---
 
-# Exercise 6: SQL Injection
+# Basic Exercise 9: SQL Injection
 
 Try these on the login page:
 
@@ -1178,7 +1178,7 @@ Do not run this outside the local exercise.
 
 ---
 
-# Exercise 7: Command Injection
+# Basic Exercise 10: Command Injection
 
 1. Log in to the web app
 2. Open `/contact`
@@ -1317,20 +1317,20 @@ Pico.css styles form elements automatically.
 
 ---
 
-# Exercise 8: Improve the UI with Pico.css
+# Basic Exercise 11: Improve the UI with Pico.css
 
 1. Review the sample in `examples/pico-css/`
 2. Add `static/app.css` and `views/base.tpl`
 3. Move the `login` page into a template
 4. Gradually move other pages into templates
 5. After UI cleanup, check how SQLi, XSS, and CSRF behavior changes
-6. In Exercise 9, implement vulnerability mitigations one by one
+6. In Advanced Exercises 12-18, implement vulnerability mitigations one by one
 
 Final goal: grow a working app into material that can explain security clearly.
 
 ---
 
-# Exercise 9: Fix Tasks
+# Advanced Exercises 12-18: Fix Tasks
 
 Implement these mitigations one at a time and confirm that the attack no longer works.
 

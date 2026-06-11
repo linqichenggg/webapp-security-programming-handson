@@ -2,6 +2,18 @@
 
 These tasks are for experienced participants or participants who finish early. The goal is not to make an attack succeed. The goal is to change a vulnerable implementation into a safer one and confirm that the same attack steps no longer work.
 
+This file covers Advanced Exercises 12-18, continuing after the basic exercises. Exercise numbers are unique across the whole course.
+
+| Number | Topic |
+| --- | --- |
+| Advanced Exercise 12 | Prevent SQL injection |
+| Advanced Exercise 13 | Prevent XSS |
+| Advanced Exercise 14 | Add cookie attributes |
+| Advanced Exercise 15 | Implement CSRF tokens |
+| Advanced Exercise 16 | Prevent command injection |
+| Advanced Exercise 17 | Hash passwords |
+| Advanced Exercise 18 | Level-appropriate report |
+
 ## How to Work
 
 1. Reproduce the behavior while the app is vulnerable.
@@ -12,7 +24,7 @@ These tasks are for experienced participants or participants who finish early. T
 
 Each task can be done independently. If multiple people work in parallel, divide ownership by file and feature.
 
-## Task A: Prevent SQL Injection
+## Advanced Exercise 12: Prevent SQL Injection
 
 Target:
 
@@ -47,7 +59,7 @@ records = cursor.execute(
 )
 ```
 
-## Task B: Prevent XSS
+## Advanced Exercise 13: Prevent XSS
 
 Target:
 
@@ -77,7 +89,7 @@ Hint:
 {{comment.comment}}
 ```
 
-## Task C: Add Cookie Attributes
+## Advanced Exercise 14: Add Cookie Attributes
 
 Target:
 
@@ -112,7 +124,7 @@ Note:
 
 - `Secure=True` assumes HTTPS. In this local HTTP exercise, setting it may prevent the cookie from being sent.
 
-## Task D: Implement CSRF Tokens
+## Advanced Exercise 15: Implement CSRF Tokens
 
 Targets:
 
@@ -152,7 +164,7 @@ if not user.session or token != user.session:
     return error_page("CSRF token is invalid.", status=403)
 ```
 
-## Task E: Prevent Command Injection
+## Advanced Exercise 16: Prevent Command Injection
 
 Target:
 
@@ -184,7 +196,7 @@ with OUTBOX_FILE.open("a", encoding="utf-8") as outbox:
     outbox.write(f"From: {address}\n{comment}\n---\n")
 ```
 
-## Task F: Hash Passwords
+## Advanced Exercise 17: Hash Passwords
 
 Targets:
 
@@ -209,7 +221,7 @@ Hint:
 
 For a minimal standard-library implementation, use `hashlib.pbkdf2_hmac()`. In real services, prefer password-storage algorithms or libraries such as Argon2, bcrypt, or scrypt.
 
-## Task G: Level-appropriate Report
+## Advanced Exercise 18: Level-appropriate Report
 
 Summarize at least one vulnerability.
 
@@ -222,4 +234,3 @@ Summarize at least one vulnerability.
 | Remaining risk | What mitigation is still missing |
 
 Experienced participants should also check side effects when multiple mitigations are combined. For example, adding `HttpOnly` makes cookie theft through XSS harder, but it does not remove XSS itself.
-

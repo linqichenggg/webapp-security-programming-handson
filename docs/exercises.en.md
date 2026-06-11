@@ -2,7 +2,24 @@
 
 All exercises run only in your local environment. The goal is not to memorize attack strings. The goal is to observe which implementation becomes dangerous, why it becomes dangerous, and how to explain the defensive fix.
 
-## Exercise 0: Startup Check
+Exercise numbers are unique across the whole course. Basic exercises and advanced exercises do not reuse the same number.
+
+| Number | Type | Topic |
+| --- | --- | --- |
+| 1 | Basic | Startup check |
+| 2 | Basic | Bottle routing |
+| 3 | Basic | Peewee and SQLite |
+| 4 | Basic | Session hijacking |
+| 5 | Advanced | Compare signed cookies |
+| 6 | Basic | XSS |
+| 7 | Advanced | Explain XSS |
+| 8 | Basic | CSRF |
+| 9 | Basic | SQL injection |
+| 10 | Basic | Command injection |
+| 11 | Basic | Clean up the UI with Pico.css |
+| 12-18 | Advanced | Vulnerability fixes and report |
+
+## Basic Exercise 1: Startup Check
 
 1. Start the web app.
 
@@ -21,7 +38,7 @@ Observation points:
 - Data is stored in the `Users` and `Comments` tables.
 - Login state is stored in a cookie.
 
-## Exercise 1: Bottle Routing
+## Basic Exercise 2: Bottle Routing
 
 Open `http://localhost:8086/hello/security` and check how `@get("/hello/<name>")` in `app/main.py` returns HTML.
 
@@ -30,7 +47,7 @@ Questions:
 - How does part of the URL become a function argument?
 - What does Bottle's `template()` function do?
 
-## Exercise 2: Peewee and SQLite
+## Basic Exercise 3: Peewee and SQLite
 
 Inspect SQLite directly.
 
@@ -49,7 +66,7 @@ Questions:
 - How do Peewee model definitions map to SQLite table definitions?
 - What is the problem with storing passwords in plain text?
 
-## Exercise 3: Session Hijacking
+## Basic Exercise 4: Session Hijacking
 
 1. Log in as `koide` in a normal browser window.
 2. Log in as `alice` in an incognito window or another browser.
@@ -64,12 +81,12 @@ Observation points:
 - When you enter an internal value such as `user1` or `user2` into the "value used by the app after verification" field, the helper page creates a signed cookie for the exercise.
 - In this material, the cookie value itself is signed. Simply typing `user1` as the browser-stored value will not work.
 
-Advanced:
+## Advanced Exercise 5: Compare Signed Cookies
 
 - Remove `secret=COOKIE_SECRET` from `response.set_cookie(..., secret=COOKIE_SECRET)` and `request.get_cookie(..., secret=COOKIE_SECRET)` in `app/main.py`. What changes?
 - Explain why predictable session IDs are dangerous.
 
-## Exercise 4: XSS
+## Basic Exercise 6: XSS
 
 1. Start the helper server in another terminal.
 
@@ -99,7 +116,18 @@ Cleanup:
 sqlite3 app/data.db "delete from comments where comment like '<script>%';"
 ```
 
-## Exercise 5: CSRF
+## Advanced Exercise 7: Explain XSS
+
+Explain the data flow from Basic Exercise 6. Focus on why the implementation is dangerous, not on memorizing the payload.
+
+Explain:
+
+- Where the submitted comment was stored.
+- Which template interpreted the stored comment as HTML.
+- What changes when `HttpOnly` is added, and what does not change.
+- Which output should change for the root fix.
+
+## Basic Exercise 8: CSRF
 
 1. Stay logged in to the web app.
 2. Start the helper server.
@@ -113,7 +141,7 @@ Observation points:
 - The BBS form has a fixed `token`, but the server does not validate it.
 - A CSRF defense needs an unpredictable token that the server verifies.
 
-## Exercise 6: SQL Injection
+## Basic Exercise 9: SQL Injection
 
 Try these values on the login page.
 
@@ -130,7 +158,7 @@ Questions:
 - Why is hand-built SQL with `sqlite3` dangerous compared with a safe Peewee query?
 - What changes when you use placeholders?
 
-## Exercise 7: Command Injection
+## Basic Exercise 10: Command Injection
 
 1. Log in to the web app.
 2. Open `/contact`.
@@ -155,7 +183,7 @@ Observation points:
 - Email sending should use a mail library, not a shell command.
 - If an external command is truly needed, use `subprocess.run([...], shell=False)` with an argument array.
 
-## Exercise 8: Clean Up the UI with Pico.css
+## Basic Exercise 11: Clean Up the UI with Pico.css
 
 Use Pico.css instead of a large UI kit. Pico.css styles semantic HTML with a single stylesheet. The sample is in `examples/pico-css/`.
 
@@ -201,16 +229,17 @@ Observation points:
 - UI improvement and vulnerability mitigation are separate tasks.
 - Templates make it easier to review escaping behavior for XSS.
 
-## Exercise 9: Fix the Vulnerabilities
+## Next Advanced Exercises
 
-Implement these mitigations one at a time and confirm that the previous attack no longer works.
+After the basic exercises, continue to Advanced Exercises 12-18 in `docs/advanced-tasks.en.md`. Implement these mitigations one at a time and confirm that the previous attack no longer works.
 
-- Replace the login SQL with placeholders.
-- Enable HTML escaping in the BBS display.
-- Add `httponly=True` and `samesite="Lax"` to the cookie.
-- Generate a CSRF token per session and verify it on POST.
-- Remove `os.system()` from `/contact`.
-- Store hashed passwords instead of plain-text passwords.
+- Advanced Exercise 12: Replace the login SQL with placeholders.
+- Advanced Exercise 13: Enable HTML escaping in the BBS display.
+- Advanced Exercise 14: Add `httponly=True` and `samesite="Lax"` to the cookie.
+- Advanced Exercise 15: Generate a CSRF token per session and verify it on POST.
+- Advanced Exercise 16: Remove `os.system()` from `/contact`.
+- Advanced Exercise 17: Store hashed passwords instead of plain-text passwords.
+- Advanced Exercise 18: Summarize observation, root cause, fix, and retest results.
 
 Final report:
 

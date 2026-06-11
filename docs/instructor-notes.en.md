@@ -5,14 +5,14 @@
 | Slide range | Repository material |
 | --- | --- |
 | p.3-p.4 Web app experiment environment | `docs/setup.en.md` |
-| p.5-p.10 Bottle / Peewee / SQLite | Exercises 1 and 2 |
-| p.11-p.28 Session management and session hijacking | Exercise 3 |
-| p.29-p.40 XSS | Exercise 4 |
-| p.41-p.45 CSRF | Exercise 5 |
-| p.46-p.49 SQL injection | Exercise 6 |
-| p.50-p.59 Command injection | Exercise 7 |
-| p.60-p.66 Clean up the UI with Pico.css | Exercise 8 |
-| Advanced and wrap-up | Exercise 9 |
+| p.5-p.10 Bottle / Peewee / SQLite | Basic Exercises 2 and 3 |
+| p.11-p.28 Session management and session hijacking | Basic Exercise 4 and Advanced Exercise 5 |
+| p.29-p.40 XSS | Basic Exercise 6 and Advanced Exercise 7 |
+| p.41-p.45 CSRF | Basic Exercise 8 |
+| p.46-p.49 SQL injection | Basic Exercise 9 and Advanced Exercise 12 |
+| p.50-p.59 Command injection | Basic Exercise 10 and Advanced Exercise 16 |
+| p.60-p.66 Clean up the UI with Pico.css | Basic Exercise 11 |
+| Advanced and wrap-up | Advanced Exercises 12-18 |
 
 ## Suggested Timing
 
@@ -56,4 +56,3 @@
 - Exposes observation points for SQLi, XSS, CSRF, and command injection in the UI and documentation.
 - Adds a helper server for XSS, CSRF, and dummy payload distribution.
 - Supports both Python virtual environments and Docker.
-

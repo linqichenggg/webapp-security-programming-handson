@@ -2,7 +2,7 @@
 
 This file is for instructors or for checking advanced tasks. If students receive it at the beginning, the observation phase may become too short. Facilitation prompts and hints are separated into `docs/instructor-hints.en.md`.
 
-## Exercise 0: Startup Check
+## Basic Exercise 1: Startup Check
 
 Expected state:
 
@@ -18,7 +18,7 @@ Command:
 python app/main.py --reset-db
 ```
 
-## Exercise 1: Bottle Routing
+## Basic Exercise 2: Bottle Routing
 
 Checkpoints:
 
@@ -33,7 +33,7 @@ http://localhost:8086/hello/security
 http://localhost:8086/hello/alice
 ```
 
-## Exercise 2: Peewee and SQLite
+## Basic Exercise 3: Peewee and SQLite
 
 Expected observations:
 
@@ -51,7 +51,7 @@ select userid, username, password, cookie from users;
 select commentid, user_id, comment, datetime from comments;
 ```
 
-## Exercise 3: Session Hijacking
+## Basic Exercise 4: Session Hijacking
 
 Expected observations:
 
@@ -68,7 +68,15 @@ Notes:
 - Signing detects tampering. It does not prevent cookie leakage.
 - The change form on `/cookies` is an exercise helper and should not exist in a real service.
 
-## Exercise 4: XSS
+## Advanced Exercise 5: Compare Signed Cookies
+
+Expected explanation:
+
+- Without `secret=COOKIE_SECRET`, the app can more directly treat the browser-stored cookie value as the internal value.
+- Signed cookies detect tampering, but they do not stop impersonation after a cookie is stolen.
+- Signing and predictable session IDs are related to different risks and should be explained separately.
+
+## Basic Exercise 6: XSS
 
 Root cause:
 
@@ -87,7 +95,15 @@ Retest:
 - Post `<script>alert(1)</script>`.
 - Confirm the script does not execute and is displayed as text.
 
-## Exercise 5: CSRF
+## Advanced Exercise 7: Explain XSS
+
+Expected explanation:
+
+- The post was stored in the database, then interpreted as HTML when `bbs.tpl` displayed it.
+- `HttpOnly` blocks JavaScript from reading the cookie, but it does not stop the HTML/script execution itself.
+- The root fix is output escaping, such as rendering comments with `{{comment.comment}}`.
+
+## Basic Exercise 8: CSRF
 
 Fix example:
 
@@ -127,7 +143,7 @@ Retest:
 - Posting from the BBS page succeeds.
 - Posting from `http://localhost:8090/csrf` returns 403.
 
-## Exercise 6: SQL Injection
+## Basic Exercise 9: SQL Injection
 
 Root cause:
 
@@ -154,7 +170,7 @@ Retest:
 | `koide` | `' or 'a'='a` | Login fails |
 | `koide' --` | `anything` | Login fails |
 
-## Exercise 7: Command Injection
+## Basic Exercise 10: Command Injection
 
 Root cause:
 
@@ -178,7 +194,7 @@ Retest:
 - The command injection string does not create `command_injection_result.txt`.
 - `app/mail_outbox.txt` stores the input as text.
 
-## Exercise 8: Pico.css UI Cleanup
+## Basic Exercise 11: Pico.css UI Cleanup
 
 Expected state:
 
@@ -193,18 +209,18 @@ Sample files:
 - `examples/pico-css/static/app.css`
 - `examples/pico-css/main_snippet.py`
 
-## Exercise 9: Fix the Vulnerabilities
+## Advanced Exercises 12-18: Fix the Vulnerabilities
 
 Acceptance criteria:
 
 | Task | Retest |
 | --- | --- |
-| SQLi fix | `' or 'a'='a` cannot log in |
-| XSS fix | `<script>` is displayed as text |
-| Cookie attributes | The student can explain `HttpOnly` and `SameSite` |
-| CSRF fix | Posting from helper `/csrf` fails |
-| Command injection fix | `command_injection_result.txt` is not created |
-| Password hashing | Plain-text passwords are not visible in the DB |
+| Advanced Exercise 12: SQLi fix | `' or 'a'='a` cannot log in |
+| Advanced Exercise 13: XSS fix | `<script>` is displayed as text |
+| Advanced Exercise 14: Cookie attributes | The student can explain `HttpOnly` and `SameSite` |
+| Advanced Exercise 15: CSRF fix | Posting from helper `/csrf` fails |
+| Advanced Exercise 16: Command injection fix | `command_injection_result.txt` is not created |
+| Advanced Exercise 17: Password hashing | Plain-text passwords are not visible in the DB |
 
 Presentation template:
 
@@ -217,4 +233,3 @@ Fix:
 Retest result:
 Remaining risk:
 ```
-

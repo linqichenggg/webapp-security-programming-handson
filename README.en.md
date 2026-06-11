@@ -78,10 +78,10 @@ http://localhost:8090
 
 1. [Prerequisites](docs/prerequisites.en.md)
 2. [Environment Setup](docs/setup.en.md)
-3. [Exercises](docs/exercises.en.md)
+3. [Exercises: Basic Exercises 1-11](docs/exercises.en.md)
 4. [Troubleshooting](docs/troubleshooting.en.md)
 5. [Security Notes](docs/security-notes.en.md)
-6. [Advanced Tasks](docs/advanced-tasks.en.md)
+6. [Advanced Tasks: Advanced Exercises 12-18](docs/advanced-tasks.en.md)
 7. [Instructor Notes](docs/instructor-notes.en.md)
 8. [Instructor Hints](docs/instructor-hints.en.md)
 9. [Solutions](docs/solutions.en.md)

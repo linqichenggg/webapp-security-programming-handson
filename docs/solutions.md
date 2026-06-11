@@ -2,7 +2,7 @@
 
 このファイルは講師または発展課題の答え合わせ用です。受講者へ最初から配布する場合は、演習の観察フェーズが短くなりすぎないよう注意してください。講師用の声かけや詰まりどころは `docs/instructor-hints.md` に分離しています。
 
-## 演習0: 起動確認
+## 基本演習1: 起動確認
 
 期待する状態:
 
@@ -18,7 +18,7 @@
 python app/main.py --reset-db
 ```
 
-## 演習1: Bottleのルーティング
+## 基本演習2: Bottleのルーティング
 
 確認ポイント:
 
@@ -33,7 +33,7 @@ http://localhost:8086/hello/security
 http://localhost:8086/hello/alice
 ```
 
-## 演習2: PeeweeとSQLite
+## 基本演習3: PeeweeとSQLite
 
 期待する観察:
 
@@ -51,7 +51,7 @@ select userid, username, password, cookie from users;
 select commentid, user_id, comment, datetime from comments;
 ```
 
-## 演習3: セッションハイジャック
+## 基本演習4: セッションハイジャック
 
 期待する観察:
 
@@ -68,7 +68,15 @@ select commentid, user_id, comment, datetime from comments;
 - 署名は改ざん検知であり、Cookie漏えいそのものを防ぐものではない
 - `/cookies` の変更フォームは演習補助機能であり、実サービスに置くべきものではない
 
-## 演習4: XSS
+## 発展演習5: 署名付きCookieの比較
+
+期待する説明:
+
+- `secret=COOKIE_SECRET` を外すと、Cookie値をアプリ内部値としてそのまま扱いやすくなる
+- 署名付きCookieは改ざんを検知するが、Cookieが盗まれた後のなりすましは防げない
+- 署名の有無と、セッションIDの推測しやすさは別の問題として説明できる
+
+## 基本演習6: XSS
 
 原因箇所:
 
@@ -87,7 +95,15 @@ select commentid, user_id, comment, datetime from comments;
 - `<script>alert(1)</script>` を投稿する
 - スクリプトが実行されず、文字として表示されることを確認する
 
-## 演習5: CSRF
+## 発展演習7: XSSを説明する
+
+期待する説明:
+
+- 投稿内容はDBに保存され、表示時に `bbs.tpl` でHTMLとして解釈された
+- `HttpOnly` はJavaScriptからのCookie読み取りを抑えるが、HTMLとしての実行そのものは止めない
+- 根本対策は、表示時に `{{comment.comment}}` のようにエスケープすること
+
+## 基本演習8: CSRF
 
 修正例:
 
@@ -127,7 +143,7 @@ if not user.session or token != user.session:
 - BBS画面からの投稿は成功する
 - `http://localhost:8090/csrf` からの投稿は403になる
 
-## 演習6: SQLインジェクション
+## 基本演習9: SQLインジェクション
 
 原因箇所:
 
@@ -154,7 +170,7 @@ record = records.fetchone()
 | `koide` | `' or 'a'='a` | ログイン失敗 |
 | `koide' --` | `anything` | ログイン失敗 |
 
-## 演習7: コマンドインジェクション
+## 基本演習10: コマンドインジェクション
 
 原因箇所:
 
@@ -178,7 +194,7 @@ with OUTBOX_FILE.open("a", encoding="utf-8") as outbox:
 - コマンドインジェクション用の文字列を入力しても `command_injection_result.txt` が作られない
 - `app/mail_outbox.txt` に入力が文字として保存される
 
-## 演習8: Pico.cssでシンプルに整える
+## 基本演習11: Pico.cssでシンプルに整える
 
 期待する状態:
 
@@ -193,18 +209,18 @@ with OUTBOX_FILE.open("a", encoding="utf-8") as outbox:
 - `examples/pico-css/static/app.css`
 - `examples/pico-css/main_snippet.py`
 
-## 演習9: 改修課題
+## 発展演習12-18: 改修課題
 
 受け入れ条件:
 
 | 課題 | 再テスト |
 | --- | --- |
-| SQLi修正 | `' or 'a'='a` でログインできない |
-| XSS修正 | `<script>` が文字として表示される |
-| Cookie属性追加 | `HttpOnly` と `SameSite` を説明できる |
-| CSRF修正 | 補助サーバ `/csrf` からの投稿が失敗する |
-| コマンドインジェクション修正 | `command_injection_result.txt` が作られない |
-| パスワードハッシュ化 | DB上に平文パスワードが見えない |
+| 発展演習12: SQLi修正 | `' or 'a'='a` でログインできない |
+| 発展演習13: XSS修正 | `<script>` が文字として表示される |
+| 発展演習14: Cookie属性追加 | `HttpOnly` と `SameSite` を説明できる |
+| 発展演習15: CSRF修正 | 補助サーバ `/csrf` からの投稿が失敗する |
+| 発展演習16: コマンドインジェクション修正 | `command_injection_result.txt` が作られない |
+| 発展演習17: パスワードハッシュ化 | DB上に平文パスワードが見えない |
 
 発表テンプレート:
 

@@ -9,7 +9,7 @@ This file is for instructors. It is not a student answer sheet. Use it for promp
 - Fix one vulnerability at a time: observe, modify, retest.
 - Before and after the exercises, clearly remind students not to test these techniques against external sites or third-party services.
 
-## Exercise 0: Startup Check
+## Basic Exercise 1: Startup Check
 
 Expected state:
 
@@ -29,7 +29,7 @@ Prompts:
 - "What URL is shown in the terminal for the running server?"
 - "What do you see when you open `/cookies` after login?"
 
-## Exercise 1: Bottle Routing
+## Basic Exercise 2: Bottle Routing
 
 Understanding to check:
 
@@ -42,7 +42,7 @@ Follow-up questions:
 - "What changes between `/hello/alice` and `/hello/bob`?"
 - "Where does the app separate a function that returns HTML from a function that touches the database?"
 
-## Exercise 2: Peewee and SQLite
+## Basic Exercise 3: Peewee and SQLite
 
 Expected observations:
 
@@ -55,7 +55,7 @@ Prompts:
 - For beginners, compare the model definition and `.schema` output line by line.
 - For experienced students, move toward a password hashing design.
 
-## Exercise 3: Session Hijacking
+## Basic Exercise 4: Session Hijacking
 
 Expected observations:
 
@@ -79,7 +79,15 @@ Instructor notes:
 - Signing detects tampering but does not prevent cookie leakage.
 - `HttpOnly` blocks JavaScript reads, but it does not stop the browser from automatically sending cookies with requests.
 
-## Exercise 4: XSS
+## Advanced Exercise 5: Compare Signed Cookies
+
+Prompts:
+
+- "If signing is removed, how does the relationship between the browser-stored value and the app-used value change?"
+- "Can a signed cookie stop reuse after the cookie is stolen?"
+- "Can you explain predictable IDs and tamper detection as separate risks?"
+
+## Basic Exercise 6: XSS
 
 Expected observations:
 
@@ -98,7 +106,15 @@ Instructor notes:
 - Emphasize output escaping for the target context, not simply deleting input.
 - `HttpOnly` reduces cookie theft impact, but it is not the root fix for XSS.
 
-## Exercise 5: CSRF
+## Advanced Exercise 7: Explain XSS
+
+Prompts:
+
+- "At what point did the stored string become HTML?"
+- "If the cookie cannot be read, can script execution on the page still remain?"
+- "Can you separate the root fix from damage reduction?"
+
+## Basic Exercise 8: CSRF
 
 Expected observations:
 
@@ -113,7 +129,7 @@ Prompts:
 - "Who attached the cookie?"
 - "Why does a fixed token not protect the action?"
 
-## Exercise 6: SQL Injection
+## Basic Exercise 9: SQL Injection
 
 Expected observations:
 
@@ -127,7 +143,7 @@ Prompts:
 - "What does it mean to separate SQL structure from values?"
 - "What is missing if we only say 'sanitize it'?"
 
-## Exercise 7: Command Injection
+## Basic Exercise 10: Command Injection
 
 Expected observations:
 
@@ -141,7 +157,7 @@ Prompts:
 - "Which character started the next command?"
 - "Does this feature need a shell at all?"
 
-## Exercise 8: Pico.css UI Cleanup
+## Basic Exercise 11: Pico.css UI Cleanup
 
 Expected observations:
 
@@ -155,7 +171,7 @@ Review points:
 - Did the student add new `{{! ... }}` output without thinking?
 - Can the student explain what to do if a CDN is unavailable?
 
-## Exercise 9: Fix the Vulnerabilities
+## Advanced Exercises 12-18: Fix the Vulnerabilities
 
 Advanced grading points:
 
@@ -202,4 +218,3 @@ Remaining risk:
 ```
 
 Evaluate whether they can explain root cause, context, mitigation, and retest result rather than whether they merely made an attack work.
-

@@ -1,6 +1,6 @@
 # Pico.css Sample
 
-This sample is used in Exercise 8, "Clean up the UI with Pico.css." The idea is to move the existing Bottle app's HTML strings into templates gradually, then load one Pico.css stylesheet to improve forms, buttons, tables, and navigation.
+This sample is used in Basic Exercise 11, "Clean up the UI with Pico.css." The idea is to move the existing Bottle app's HTML strings into templates gradually, then load one Pico.css stylesheet to improve forms, buttons, tables, and navigation.
 
 ## Added Structure
 
