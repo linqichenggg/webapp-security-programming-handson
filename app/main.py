@@ -179,14 +179,13 @@ def login():
     username = request.forms.decode().get("username", "")
     password = request.forms.decode().get("password", "")
 
-    # Intentionally vulnerable for SQL injection exercises.
-    sql = "SELECT * FROM users WHERE username='" + username + "' and password='" + password + "';"
+    sql = "SELECT * FROM users WHERE username=? and password=?;"
     last_login_sql = sql
 
     conn = sqlite3.connect(str(DBFILE))
     cursor = conn.cursor()
     try:
-        records = cursor.execute(sql)
+        records = cursor.execute(sql, (username, password))
         record = records.fetchone()
     except sqlite3.Error as exc:
         conn.close()
