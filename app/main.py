@@ -5,7 +5,7 @@ import os
 import sqlite3
 from pathlib import Path
 
-from bottle import TEMPLATE_PATH, get, hook, post, redirect, request, response, run, template
+from bottle import TEMPLATE_PATH, get, hook, post, redirect, request, response, run, static_file, template
 from peewee import CharField, ForeignKeyField, Model, PrimaryKeyField, SqliteDatabase
 
 
@@ -130,6 +130,11 @@ def before_request():
     response.headers["Access-Control-Allow-Origin"] = "*"
 
 
+@get("/static/<filepath:path>")
+def static_files(filepath):
+    return static_file(filepath, root=str(BASE_DIR / "static"))
+
+
 @get("/")
 @get("/signup")
 def signup_form():
@@ -165,23 +170,7 @@ def hello(name):
 
 @get("/login")
 def login_form():
-    return render_page(
-        "Login",
-        """
-        <p>初期ユーザは次のアカウントを使えます。</p>
-        <table>
-          <tr><th>Username</th><th>Password</th></tr>
-          <tr><td><code>koide</code></td><td><code>password</code></td></tr>
-          <tr><td><code>alice</code></td><td><code>alice123</code></td></tr>
-          <tr><td><code>bob</code></td><td><code>bob123</code></td></tr>
-        </table>
-        <form action="/login" method="post">
-          <label>Username: <input name="username" type="text" autocomplete="username"></label>
-          <label>Password: <input name="password" type="password" autocomplete="current-password"></label>
-          <button type="submit">Login</button>
-        </form>
-        """,
-    )
+    return template("login", error=None)
 
 
 @post("/login")
