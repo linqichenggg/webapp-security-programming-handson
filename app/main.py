@@ -210,7 +210,13 @@ def login():
         )
 
     cookie_id = "user" + str(record[0])
-    response.set_cookie("cookie_id", cookie_id, secret=COOKIE_SECRET)
+    response.set_cookie(
+        "cookie_id",
+        cookie_id,
+        secret=COOKIE_SECRET,
+        httponly=True,
+        samesite="Lax",
+    )
     cursor.execute("UPDATE users SET cookie=? WHERE userid=?", (cookie_id, record[0]))
     conn.commit()
     conn.close()
