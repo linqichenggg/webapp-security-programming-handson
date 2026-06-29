@@ -38,9 +38,8 @@
       % for comment in comments:
         <li>
           {{comment.user.username}} : {{comment.datetime}}<br>
-          {{!comment.comment}}
+          {{comment.comment}}
         </li>
-        <!-- Escaping is intentionally disabled for the XSS exercise. -->
       % end
     </ol>
 
