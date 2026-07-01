@@ -44,7 +44,7 @@
     </ol>
 
     <form action="/bbs" method="post">
-      <input type="hidden" name="token" value="a73+f*&t5">
+      <input type="hidden" name="token" value="{{token}}">
       <textarea name="comment" rows="5" cols="70" placeholder="何か書いてください"></textarea>
       <button type="submit">書き込む</button>
     </form>

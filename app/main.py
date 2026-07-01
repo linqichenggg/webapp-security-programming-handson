@@ -2,6 +2,7 @@ import argparse
 import datetime
 import html
 import os
+import secrets
 import sqlite3
 from pathlib import Path
 
@@ -123,6 +124,13 @@ def current_user():
     if not cookie_id:
         return None
     return Users.get_or_none(Users.cookie == cookie_id)
+
+
+def ensure_csrf_token(user):
+    if not user.session:
+        user.session = secrets.token_urlsafe(32)
+        user.save()
+    return user.session
 
 
 @hook("before_request")
@@ -376,7 +384,8 @@ def bbs_form():
         return error_page("ログインしてください。", status=401)
 
     comments = Comments.select().order_by(Comments.commentid)
-    return template("bbs", username=user.username, comments=comments)
+    token = ensure_csrf_token(user)
+    return template("bbs", username=user.username, comments=comments, token=token)
 
 
 @post("/bbs")
@@ -384,6 +393,10 @@ def post_bbs():
     user = current_user()
     if user is None:
         return error_page("ログインしてください。", status=401)
+
+    token = request.forms.decode().get("token", "")
+    if not user.session or token != user.session:
+        return error_page("CSRF token is invalid.", status=403)
 
     now = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
     comment = request.forms.decode().get("comment", "")
