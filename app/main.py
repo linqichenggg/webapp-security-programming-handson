@@ -1,5 +1,7 @@
 import argparse
 import datetime
+import hashlib
+import hmac
 import html
 import os
 import secrets
@@ -14,6 +16,8 @@ BASE_DIR = Path(__file__).resolve().parent
 DBFILE = Path(os.environ.get("DBFILE", BASE_DIR / "data.db"))
 OUTBOX_FILE = Path(os.environ.get("OUTBOX_FILE", BASE_DIR / "mail_outbox.txt"))
 COOKIE_SECRET = os.environ.get("COOKIE_SECRET", "key")
+PASSWORD_HASH_ALGORITHM = "pbkdf2_sha256"
+PASSWORD_HASH_ITERATIONS = 200_000
 
 TEMPLATE_PATH.insert(0, str(BASE_DIR / "views"))
 
@@ -41,6 +45,48 @@ class Comments(BaseModel):
     datetime = CharField(null=False)
 
 
+def hash_password(password, salt=None):
+    if salt is None:
+        salt = secrets.token_hex(16)
+    password_hash = hashlib.pbkdf2_hmac(
+        "sha256",
+        password.encode("utf-8"),
+        salt.encode("ascii"),
+        PASSWORD_HASH_ITERATIONS,
+    ).hex()
+    return f"{PASSWORD_HASH_ALGORITHM}${PASSWORD_HASH_ITERATIONS}${salt}${password_hash}"
+
+
+def verify_password(password, encoded_password):
+    try:
+        algorithm, iterations, salt, expected_hash = encoded_password.split("$", 3)
+        iterations = int(iterations)
+    except (AttributeError, ValueError):
+        return False
+
+    if algorithm != PASSWORD_HASH_ALGORITHM:
+        return False
+
+    actual_hash = hashlib.pbkdf2_hmac(
+        "sha256",
+        password.encode("utf-8"),
+        salt.encode("ascii"),
+        iterations,
+    ).hex()
+    return hmac.compare_digest(actual_hash, expected_hash)
+
+
+def password_is_hashed(password):
+    return bool(password and password.startswith(f"{PASSWORD_HASH_ALGORITHM}$"))
+
+
+def migrate_plaintext_passwords():
+    for user in Users.select():
+        if not password_is_hashed(user.password):
+            user.password = hash_password(user.password or "")
+            user.save()
+
+
 def initialize_database(reset=False):
     db.connect(reuse_if_open=True)
     if reset:
@@ -56,7 +102,7 @@ def initialize_database(reset=False):
             ("bob", "bob123"),
         ]
         for username, password in seed_users:
-            user = Users.create(username=username, password=password)
+            user = Users.create(username=username, password=hash_password(password))
             user.cookie = "user" + str(user.userid)
             user.save()
         koide = Users.get(Users.username == "koide")
@@ -65,6 +111,8 @@ def initialize_database(reset=False):
             comment="ようこそ。ここは演習用の掲示板です。",
             datetime=datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S"),
         )
+    else:
+        migrate_plaintext_passwords()
 
 
 def render_page(title, body):
@@ -167,7 +215,7 @@ def register():
     if Users.get_or_none(Users.username == username):
         return error_page("その username は登録済みです。")
 
-    Users.create(username=username, password=password)
+    Users.create(username=username, password=hash_password(password))
     return render_page("Registered", '<p class="ok">Registered.</p><p><a href="/login">Go to Login</a></p>')
 
 
@@ -187,13 +235,13 @@ def login():
     username = request.forms.decode().get("username", "")
     password = request.forms.decode().get("password", "")
 
-    sql = "SELECT * FROM users WHERE username=? and password=?;"
+    sql = "SELECT * FROM users WHERE username=?;"
     last_login_sql = sql
 
     conn = sqlite3.connect(str(DBFILE))
     cursor = conn.cursor()
     try:
-        records = cursor.execute(sql, (username, password))
+        records = cursor.execute(sql, (username,))
         record = records.fetchone()
     except sqlite3.Error as exc:
         conn.close()
@@ -206,7 +254,7 @@ def login():
             """,
         )
 
-    if record is None:
+    if record is None or not verify_password(password, record[2]):
         conn.close()
         return render_page(
             "Login failed",
@@ -214,6 +262,7 @@ def login():
             <p class="error">Username or password is wrong.</p>
             <p>Executed SQL:</p>
             <pre>{html.escape(sql)}</pre>
+            <p>Password is verified with a hash.</p>
             """,
         )
 
@@ -235,6 +284,7 @@ def login():
         <p class="ok">Login success. Hello, {html.escape(str(record[1]))}.</p>
         <p>Executed SQL:</p>
         <pre>{html.escape(sql)}</pre>
+        <p>Password is verified with a hash.</p>
         <p><a href="/mypage">Go to MyPage</a></p>
         """,
     )
