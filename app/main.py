@@ -433,16 +433,16 @@ def contact():
     address = request.forms.decode().get("address", "")
     comment = request.forms.decode().get("comment", "")
 
-    # Intentionally vulnerable for command injection exercises.
-    command = f'/bin/echo "From: {address}\\n{comment}" >> "{OUTBOX_FILE}"'
-    exit_code = os.system(command)
+    with OUTBOX_FILE.open("a", encoding="utf-8") as outbox:
+        outbox.write(f"From: {address}\n{comment}\n---\n")
+
+    saved_message = f"From: {address}\n{comment}"
     return render_page(
         "Contact sent",
         f"""
         <p class="ok">正常に送信されました。</p>
-        <p>Executed shell command:</p>
-        <pre>{html.escape(command)}</pre>
-        <p>Exit code: {exit_code}</p>
+        <p>Saved contact message:</p>
+        <pre>{html.escape(saved_message)}</pre>
         """,
     )
 
